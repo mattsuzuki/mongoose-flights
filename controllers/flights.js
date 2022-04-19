@@ -1,10 +1,12 @@
 const Flight = require("../models/flight");
+const Ticket = require('../models/ticket');
 
 module.exports = {
   index,
   new: newFlight,
   create,
-  show
+  show,
+  delete: deleteFlight
 };
 
 function index(req, res) {
@@ -13,22 +15,21 @@ function index(req, res) {
   });
 }
 
-function create(req, res) {
-  req.body.nowShowing = !!req.body.nowShowing;
-  // remove any whitespace at the start and end of cast
-  req.body.cast = req.body.cast.trim();
-  if (req.body.cast) req.body.cast = req.body.cast.split(/\s*,\s*/);
-  for (let key in req.body) {
-    if (req.body[key] === "") delete req.body[key];
+function newFlight(req, res) {
+	const newFlight = new Flight();
+	const dt = newFlight.departs;
+	const destDate = `${dt.getFullYear()}-${dt.getMonth() + 1}-${dt.getDate()}T${dt
+		.getHours()
+		.toString()
+		.padStart(2, '0')}:${dt.getMinutes().toString().padStart(2, '0')}`;
+	res.render('flights/new', { destDate });
   }
-  const flight = new flight(req.body);
-  flight.save(function (err) {
-    if (err) return res.render("flights/new");
-    console.log(flight);
-    // created data, so redirect
-    res.redirect("/flights");
-  
-  });
+
+function create(req, res) {
+	if (req.body.departs === '') delete req.body.departs;
+	Flight.create(req.body);
+	console.log(req.body);
+	res.redirect('flights');
 }
 function show(req, res) {
 	Flight.findById(req.params.id, function(err, flight) {
@@ -41,10 +42,9 @@ function show(req, res) {
 	});
 }
 
-// function newFlight(req, res) {
-//   res.render('flights/new');
-// }
-
-function newFlight() {
-  console.log(`hello`);
+function deleteFlight(req, res) {
+  Flight.findByIdAndRemove(req.params.id, function(err, flight){
+    res.redirect('/')
+  });
 }
+
