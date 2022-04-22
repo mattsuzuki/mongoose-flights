@@ -1,47 +1,32 @@
 const mongoose = require('mongoose');
+// optional shortcut variable
 const Schema = mongoose.Schema;
 
 const destinationSchema = new Schema({
-  airport: {
-    type: String,
-    default: 'DEN',
-    enum: ['LAX', 'HRK', 'SAN', 'ONT']
-  },
+  airport: {type: String, enum: ['ATL', 'DFW', 'DEN', 'LAX', 'SAN' ]},
   arrival: Date
+}, {
+  timestamps: true
 });
 
 const flightSchema = new Schema({
   airline: {
-    type: String,
-    required: true
+      type: String, enum: ['american', 'delta', 'southwest', 'united']
   },
-
-
-  flightno: {
-    type: Number,
-    min: 9,
-    max: 1000
-    
+  airport: {
+      type: String, enum: ['ATL', 'DFW', 'DEN', 'LAX', 'SAN']
+  },
+  flightNo: {
+      type: Number, required: true, max: 9999, min: 10
   },
   departs: {
-    type: Date,
-    Default: function() {
-      let d = new Date();
-      let year = d.getFullYear();
-      let month = d.getMonth();
-      let day = d.getDate();
-      let result = new Date(year + 1, month, day)
-      return result;
-    
-  }
-},
-airport: {
-  type: String, 
-  enum: ['LAX', 'HRK', 'SAN', 'ONT']
-},
-destinations: [ destinationSchema]
-
-});
+      type: Date, default: function () {
+          return new Date(new Date().setFullYear(new Date().getFullYear() + 1));
+      }
+  }, 
+  destinations: [destinationSchema]
+}
+);
 
 
 

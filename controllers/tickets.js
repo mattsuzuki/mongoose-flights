@@ -1,29 +1,25 @@
-const Ticket = require('../models/ticket');
 const Flight = require('../models/flight');
+const Ticket = require(`../models/ticket`);
+
 
 module.exports = {
-    new: newTicket,
-    create,
-    delete: deleteTicket
-};
-
-function newTicket(res, req) {
-    res.render('tickets/new', {flightId: req.params.id});
+  create, 
+  new: newTicket
 }
 
-function create(res, req){
-    flightId = req.params.id;
-    req.body.flight = flightId;
-    Ticket.create(req.body, function(err, ticket){
-        res.redirect(`/flights/${flightId}`);
-    });
+
+
+function create(req,res) {
+  req.body.flight = req.params.id
+  console.log(req.body)
+  Ticket.create(req.body, function(err, ticket) {
+    res.redirect(`/flights/${ticket.flight}`)
+  })
 }
 
-function deleteTicket(req, res) {
-    Ticket.findById(req.params.id).populate('flight').exec(function(err, ticket){
-        Ticket.findByIdAndDelete(req.params.id, function(err){
-            console.log(`deleting: ${ticket}`);
-            res.redirect(`/flights/${ticket.flight._id}`);
-        });
-    });
+function newTicket(req, res) {
+  res.render('ticket/new', {
+    title: 'Add Ticket',
+    flight: req.params.id
+  })
 }

@@ -1,29 +1,31 @@
 <%- include('../partials/header') %>
-
-<h2>Enter a Airline</h2>
-<form action="/flights" method="POST">
-  <label>Airline:
-    <input type="text" name="title">
-  </label><br>
-  <label>Release Year:
-    <input type="text" name="releaseYear">
-  </label><br>
-  <label>MPAA Rating
-    <select name="mpaaRating">
-      <option value="G">G</option>
-      <option value="PG">PG</option>
-      <option value="PG-13">PG-13</option>
-      <option value="R">R</option>
-    </select>
-  </label><br>
-  <label>Cast (separate actors with commas):
-    <input type="text" name="cast">
-  </label><br>
-  <label>Now Showing:
-    <input type="checkbox" name="nowShowing" checked>
-  </label><br>
-  <input type="submit" value="Add Flight">
-</form>
-
+  <div class="newForm">
+    <h2>Create a New Flight:</h2>
+  <form action="/flights" method="POST">
+    <label>Airline:
+      <select name="airline">
+        <option value="american">American</option>
+        <option value="delta">Delta</option>
+        <option value="southwest">Southwest</option>
+        <option value="united">United</option>
+      </select>
+    </label><br>
+    <label>Airport:
+      <select name="airport">
+        <option value="ATL">ATL</option>
+        <option value="DEN" selected>DEN</option>
+        <option value="LAX">LAX</option>
+        <option value="SAN">SAN</option>
+      </select>
+    </label><br>
+    <label>Flight Number:
+      <input name="flightNo" type="number" min="10" max="9999">
+    </label><br>
+    <label>Departs:
+      <input type="datetime-local" name="departs">
+    </label><br>
+    <input class="addButton" type= "submit" value="Add Flight">
+  </form>
+  </div>
 
 <%- include('../partials/footer') %>
